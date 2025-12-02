@@ -1,11 +1,12 @@
 from pathlib import Path
 
 
-def part1():
+def main(part=1):
     input_text = Path("input.txt").read_text()
     lines = input_text.splitlines()
     current_position = 50
-    pointed_to_zero_count = 0
+    previous_position = None
+    counter = 0
 
     # iterate over moves
     for move in lines:
@@ -17,6 +18,7 @@ def part1():
         diff = distance if direction == "R" else -distance
 
         # Calculate next unbounded/absolute position
+        previous_position = current_position
         absolute_position = current_position + diff
         # Normalized position to account for circling back to zero
         current_position = absolute_position % 100
@@ -24,13 +26,19 @@ def part1():
 
         # Increase counter if the current position is zero
         if current_position == 0:
-            pointed_to_zero_count += 1
+            counter += 1
 
-        print(current_position)
+        if part == 2:
+            # Also increase counter if the dial crossed the zero point
+            all_positions = range(previous_position, absolute_position, 1 if direction == "R" else -1)
+            interim_positions = all_positions[1:]
+            for pos in interim_positions:
+                if pos % 100 == 0:
+                    counter += 1
 
-    print(pointed_to_zero_count)
+    print(counter)
 
 
 
 if __name__ == "__main__":
-    part1()
+    main(part=2)
