@@ -1,8 +1,9 @@
+import re
 from pathlib import Path
 import textwrap
 
 
-def main(part: int):
+def main(part: str):
     input_text = Path("input.txt").read_text()
     ranges = input_text.split(",")
     invalid_refs = []
@@ -38,13 +39,16 @@ def is_ref_invalid_part2(reference_str: str) -> bool:
     return False
 
 
+def is_ref_invalid_part2_re(reference_str: str) -> bool:
+    return bool(re.fullmatch(r"(.+)\1+", reference_str))
 
 
 VALIDATORS = {
-    1: is_ref_invalid_part1,
-    2: is_ref_invalid_part2, # 28858486244
+    "1": is_ref_invalid_part1,
+    "2": is_ref_invalid_part2, # 28858486244
+    "2.1": is_ref_invalid_part2_re,
 }
 
 
 if __name__ == '__main__':
-    main(2)
+    main("2.1")
