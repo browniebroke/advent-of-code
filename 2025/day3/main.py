@@ -12,17 +12,20 @@ def main(part: str):
         total_joltage += bank_j
 
     print(total_joltage)
-    # 17479 too high
-    # 16533 not good
-    # 16854 Good
-    # 15983 too low
 
 
 def compute_bank_joltage(bank: str) -> int:
-    d0 = max(bank[:-1])
-    d0_idx = bank.index(d0)
-    d1 = max(bank[d0_idx + 1:])
-    return int(f"{d0}{d1}")
+    batteries = []
+    needed_batteries_count = 12
+    lower_index = 0
+    upper_index = len(bank) - needed_batteries_count
+    for idx in range(needed_batteries_count):
+        upper_index += 1
+        bank_range = bank[lower_index:upper_index]
+        best_battery = max(bank_range)
+        batteries.append(best_battery)
+        lower_index += bank_range.index(best_battery) + 1
+    return int("".join(batteries))
 
 
 if __name__ == '__main__':
