@@ -6,17 +6,26 @@ def main(part: str):
     input_text = Path("input.txt").read_text()
     diagram = [list(l) for l in input_text.splitlines()]
     accessible_rolls = 0
-    for y, row in enumerate(diagram):
-        for x, cell in enumerate(row):
-            if cell != "@":
-                # Not a roll, no need to worry about it
-                continue
-            adjacent_cells = list(get_adjacent_cells(diagram, x, y))
-            if len([cell for cell in adjacent_cells if cell == "@"]) < 4:
-                accessible_rolls += 1
+    has_new_rolls = True
+    while has_new_rolls:
+        has_new_rolls = False
+        for y, row in enumerate(diagram):
+            for x, cell in enumerate(row):
+                if cell != "@":
+                    # Not a roll, no need to worry about it
+                    continue
+                adjacent_cells = list(get_adjacent_cells(diagram, x, y))
+                if len([cell for cell in adjacent_cells if cell == "@"]) < 4:
+                    accessible_rolls += 1
+                    diagram[y][x] = "x"
+                    has_new_rolls = True
     print(accessible_rolls)
+    # Part 1
     # 1580 -> too high
     # 1393 -> OK
+
+    # Part 2
+    # 8643 -> OK
 
 
 def get_adjacent_cells(diagram: list[list[str]], x: int, y: int):
